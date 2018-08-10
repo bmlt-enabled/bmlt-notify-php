@@ -27,7 +27,10 @@ if (empty($xml)) {
 else {
   // loop begins
   foreach($xml->row as $row) {
-   
+    if( strpos( $row->meeting_name, 'YAP' ) !== false ) {
+      // dont show YAP data
+    }
+  else {   
   // begin new paragraph
   $message .= "<p>";
    
@@ -52,8 +55,10 @@ else {
   
   // show details
   $details=$row->details;
+   // remove root_server_uri info
+  $details = str_replace(". root_server_uri was added as \"https:\" "," ",$details);
 	 	// Remove last . at end of details
-	  $details = preg_replace('/.$/',"",$details);
+	 $details = preg_replace('/.$/',"",$details);
 		// Remove the weird #@-@# from the format codes
 	 $details = str_replace("#@-@#"," ",$details);
  		// protect email . from being replaced with </br> tag
@@ -103,6 +108,7 @@ else {
   $message .= "<strong>Details:</strong><LI> ".$details."</OL>";
   $message .= "</p> <hr>";
   // end paragraph
+  }
   }
   // loop ends
   $message .= "END of BMLT Changes";
